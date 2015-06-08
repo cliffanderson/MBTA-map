@@ -1,0 +1,23 @@
+Lechmere 42.370772 -71.076536
+Science Park 42.366664 -71.067666
+North Station 42.365577 -71.06129
+Haymarket 42.363021 -71.05829
+Park Street 42.35639457 -71.0624242
+Boylston 42.35302 -71.06459
+Arlington 42.351902 -71.070893
+Copley 42.349974 -71.077447
+Hynes Convention Center 42.347888 -71.087903
+Kenmore 42.348949 -71.095169
+Saint Mary Street 42.345974 -71.107353
+Hawes Street 42.344906 -71.111145
+Kent Street 42.344074 -71.114197
+Saint Paul Street 42.343327 -71.116997
+Coolidge Corner 42.342213 -71.121201
+Summit Ave. 42.34111 -71.12561
+Brandon Hall 42.340023 -71.129082
+Fairbanks Street 42.339725 -71.131073
+Washington Square 42.339394 -71.13533
+Tappan Street 42.338459 -71.138702
+Dean Road 42.337807 -71.141853
+Englewood Ave. 42.336971 -71.14566
+Cleveland Circle 42.336142 -71.149326

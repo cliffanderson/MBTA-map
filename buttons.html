@@ -1,0 +1,25 @@
+<html>
+  <body>
+    <script type="text/javascript">
+
+      function handle(element)
+      {
+        var line = element.name;
+      //  var value = element.value;
+        document.getElementById(line).innerHTML += "line: " + line + " is " + element.checked;
+      }
+    </script>
+
+    <div style="display:inline;">
+      Red: <input type="checkbox" name="red" onchange="handle(this);" checked/> <br>
+      Orange: <input type="checkbox" name="orange" onchange="handle(this);" /> <br>
+      Blue: <input type="checkbox" name="blue" onchange="handle(this);" /> <br>
+    </div>
+
+
+
+    <p id="red"> line: red is false</p>
+    <p id="orange"> line: orange is false </p>
+    <p id="blue"> line: blue is false</p>
+  </body>
+</html>

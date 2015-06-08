@@ -1,0 +1,28 @@
+Lechmere 42.370772 -71.076536
+Science Park 42.366664 -71.067666
+North Station 42.365577 -71.06129
+Haymarket 42.363021 -71.05829
+Park Street 42.35639457 -71.0624242
+Boylston 42.35302 -71.06459
+Arlington 42.351902 -71.070893
+Copley 42.349974 -71.077447
+Hynes Convention Center 42.347888 -71.087903
+Kenmore 42.348949 -71.095169
+Blandford Street 42.349293 -71.100258
+Boston Univ. East 42.349735 -71.103889
+Boston Univ. Central 42.350082 -71.106865
+Boston Univ. West 42.350941 -71.113876
+Saint Paul Street 42.3512 -71.116104
+Pleasant Street 42.351521 -71.118889
+Babcock Street 42.35182 -71.12165
+Packards Corner 42.351967 -71.125031
+Harvard Ave. 42.350243 -71.131355
+Griggs Street 42.348545 -71.134949
+Allston Street 42.348701 -71.137955
+Warren Street 42.348343 -71.140457
+Washington Street 42.343864 -71.142853
+Sutherland Road 42.341614 -71.146202
+Chiswick Road 42.340805 -71.150711
+Chestnut Hill Ave. 42.338169 -71.15316
+South Street 42.3396 -71.157661
+Boston College 42.340081 -71.166769

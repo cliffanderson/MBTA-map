@@ -1,0 +1,19 @@
+Lechmere 42.370772 -71.076536
+Science Park 42.366664 -71.067666
+North Station 42.365577 -71.06129
+Haymarket 42.363021 -71.05829
+Park Street 42.35639457 -71.0624242
+Boylston 42.35302 -71.06459
+Arlington 42.351902 -71.070893
+Copley 42.349974 -71.077447
+Prudential 42.34557 -71.081696
+Symphony 42.342687 -71.085056
+Northeastern University 42.340401 -71.088806
+Museum of Fine Arts 42.337711 -71.095512
+Longwood Medical Area 42.33596 -71.100052
+Brigham Circle 42.334229 -71.104609
+Fenwood Road 42.333706 -71.105728
+Mission Park 42.333195 -71.109756
+Riverway 42.331684 -71.111931
+Back of the Hill 42.330139 -71.111313
+Heath Street 42.328681 -71.110559

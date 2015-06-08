@@ -1,0 +1,8 @@
+South Station 42.352614 -71.055364
+Newmarket 42.326701 -71.066314
+Uphams Corner 42.31867 -71.069072
+Four Corners / Geneva 42.305037 -71.076833
+Talbot Avenue 42.292246 -71.07814
+Morton Street 42.280994 -71.085475
+Fairmount 42.253638 -71.11927
+Readville 42.238405 -71.133246

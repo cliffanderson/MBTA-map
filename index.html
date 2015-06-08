@@ -1,0 +1,36 @@
+<html>
+
+	<canvas id="canvas" width="200" height="200">
+		Your browser does not support html5!
+	</canvas>
+
+	<body>
+		Hello, web! <br>
+		
+		<script type="text/javascript">
+			function draw(radians)
+			{
+				var canvas = document.getElementById("canvas");
+				var context = canvas.getContext("2d");
+				
+				context.fillStyle = "yellow";
+				context.beginPath();
+				context.arc(95, 85, 40, 0, radians * Math.PI);
+				context.closePath();
+				context.fill();
+				context.lineWidth = 2;
+				context.stroke();
+			}
+			
+			draw(.5);
+			
+			
+			
+			//document.write("Hello, Javascript!");
+			
+			
+		</script>
+		
+	</body>
+
+</html>

@@ -1,0 +1,10 @@
+South Station 42.352614 -71.055364
+JFK/UMASS 42.321123 -71.052555
+Quincy Center 42.251809 -71.005409
+Weymouth Landing/ East Braintree 42.2208 -70.9682
+East Weymouth 42.2191 -70.9214
+West Hingham 42.2367 -70.9031
+Nantasket Junction 42.2452 -70.8698
+Cohasset 42.244251 -70.838052
+North Scituate 42.2197 -70.7877
+Greenbush 42.1781 -70.7462

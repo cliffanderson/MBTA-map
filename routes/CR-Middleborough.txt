@@ -1,0 +1,10 @@
+South Station 42.352614 -71.055364
+JFK/UMASS 42.321123 -71.052555
+Quincy Center 42.251809 -71.005409
+Braintree 42.20855 -71.00085
+Holbrook/ Randolph 42.156343 -71.027371
+Montello 42.106555 -71.022001
+Brockton 42.08572 -71.01686
+Campello 42.060951 -71.011004
+Bridgewater 41.986355 -70.966625
+Middleborough/ Lakeville 41.87821 -70.918444
