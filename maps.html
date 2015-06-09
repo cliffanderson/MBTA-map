@@ -21,6 +21,7 @@
     <script>
       var map;
       var trains = []; //train object: {'line': 'Red', 'current': google.maps.Marker(), 'future': google.maps.LatLng(), 'id' : 1234}
+      var overlays = {}; //overlay object: 'Blue': {'poly': google.maps.PolyLine(), 'markers': google.maps.Marker()[]}
 
       var lines = ['Blue', 'Red', 'Orange', 'Green-B', 'Green-C', 'Green-D', 'Green-E',
       'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
@@ -29,16 +30,16 @@
 
 
 
-      var lineOverlay = ['blue', 'red-ashmont', 'red-braintree', 'orange', 'green-b',
-      'green-c', 'green-d', 'green-e', 'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
+      var lineOverlay = ['Blue', 'Red-ashmont', 'Red-braintree', 'Orange', 'Green-B',
+      'Green-C', 'Green-D', 'Green-E', 'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
       'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
       'CR-Newburyport', 'CR-Providence', 'CR-Providence-Stoughton', 'CR-Worcester'];
 
 
 
-      var colors = {'blue': '#00A3E7', 'red-ashmont': '#FF0000', 'red-braintree': '#FF0000',
-       'orange': '#FFA500', 'green-b': '#00B351', 'green-c': '#00B351', 'green-d': '#00B351',
-       'green-e': '#00B351'};
+      var colors = {'Blue': '#00A3E7', 'Red-ashmont': '#FF0000', 'Red-braintree': '#FF0000',
+       'Orange': '#FFA500', 'Green-B': '#00B351', 'Green-C': '#00B351', 'Green-D': '#00B351',
+       'Green-E': '#00B351'};
 
       google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -53,13 +54,13 @@
 
         moveTrains();
 
-      }, 30000);
+      }, 300000000000000);
 
-      var inTrains = function(id)
+      var inTrains = function(id, line)
       {
         for(var i in trains)
         {
-          if(trains[i].id == id)
+          if(trains[i].id == id && trains[i].line == line)
           {
             return true;
           }
@@ -145,7 +146,7 @@
                   color = colors[lineOverlay[i]];
               }
 
-              loadLine(lineOverlay[i], color);
+              loadLine(lineOverlay[i]);
             }
           });
 
@@ -187,7 +188,7 @@
 
         var coords = request.responseText.split('\n');
 
-        for(var i in coords)
+        for(var i = 0; i < coords.length - 1; i++)
         {
 
 
@@ -204,13 +205,13 @@
           //if this train is not new, just change 'future'
 
           //if new
-          if(!inTrains(id))
+          if(!inTrains(id, line))
           {
             var marker = new google.maps.Marker(
               {
                 position: new google.maps.LatLng(lat, lng),
                 icon: image,
-                title: '\'' + line + '\'',
+                title: id,
                 map: map
               }
             );
@@ -223,6 +224,7 @@
           }
           else
           {
+            console.log("Updating: " + id)
             //find current train and change future
             for(var i in trains)
             {
@@ -236,21 +238,30 @@
         }
       }
 
-      function loadLine(line, color)
+      function loadLine(line)
       {
+        var color;
+        if(line.includes('CR'))
+        {
+          color = '#F524FB';
+        }
+        else
+        {
+          color = colors[line];
+        }
+
+
+        var overlay = new Object();
         var path = [];
 
-        var request = new XMLHttpRequest();
+        var data = requestData('routes/' + line + '.txt').split('\n');
 
-      //  console.log("Getting: " + 'routes/' + line + '.txt');
-        request.open('GET', 'routes/' + line + '.txt', false);
-        request.send();
+        var markers = [];
 
-        var data = request.responseText;
-        data = data.split('\n');
-
-        for(var i = 0; i < data.length - 1; i++)
+        for(var i = 0; i < data.length; i++)
         {
+          if(data[i] == '') continue;
+
           var pieces = data[i].split(' ');
 
           var lat = pieces[pieces.length-2];
@@ -281,9 +292,9 @@
             }
           );
 
-        }
+          markers.push(marker);
 
-      //  console.log('line: ' + line + "  " + path);
+        }
 
         //put path on map
         var pathOnMap = new google.maps.Polyline(
@@ -298,29 +309,97 @@
 
         pathOnMap.setMap(map);
 
+        overlay.poly = pathOnMap;
+        overlay.markers = markers;
+
+        overlays[line] = overlay;
       }
 
       function handle(element)
       {
-        console.log(element);
+        console.log("Handling: " + element.name);
+      //  console.log(element);
+        //console.log('Trains: ' + trains.length);
 
         if(element.checked)
         {
           //add the trains
           loadDataForTrain(element.name);
+
+          if(element.name == 'Red')
+          {
+            loadLine('Red-ashmont');
+            loadLine('Red-braintree');
+          }
+          else
+          {
+              loadLine(element.name);
+          }
         }
         else
         {
-            //remove the trains
+            var toRemove = [];
+
+            //remove the trains from map
             for(var i in trains)
             {
               if(trains[i].line == element.name)
               {
                 trains[i].current.setMap(null);
-                trains.splice(i, 1);
+                toRemove.push({'id': trains[i].id, 'line': trains[i].line});
               }
             }
+
+            //remove all from trains array
+            for(var j = 0; j < toRemove.length; j++)
+            {
+              var id = toRemove[j].id;
+              var line = toRemove[j].line;
+
+              for(var k in trains)
+              {
+                if(trains[k].id == id && trains[k].line == line)
+                {
+                  trains.splice(k, 1);
+                  break;
+                }
+              }
+            }
+
+            if(element.name == 'Red')
+            {
+              removeOverlayLine('Red-ashmont');
+              removeOverlayLine('Red-braintree')
+            }
+            else
+            {
+              removeOverlayLine(element.name);
+            }
+          }
         }
+
+      function removeOverlayLine(line)
+      {
+        var overlay = overlays[line];
+        //remove path
+        overlay.poly.setMap(null);
+
+        //remove markers
+        for(var y = 0; y < overlay.markers.length; y++)
+        {
+          overlay.markers[y].setMap(null);
+        }
+      }
+
+
+      function requestData(url)
+      {
+        var request = new XMLHttpRequest();
+
+        request.open('GET', url, false);
+        request.send();
+
+        return request.responseText;
       }
 
     </script>
