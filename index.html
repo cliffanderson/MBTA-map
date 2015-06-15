@@ -1,332 +1,36 @@
 <html>
-  <head>
-    <style>
-      #map-canvas
-      {
 
-        float: left;
-        width: 80%;
-        height: 90%;
-      }
-      #controlpanel
-      {
-        height: 50%;
-        background-color: #AAAAAA;
-        display: inline;
-      }
-    </style>
+	<canvas id="canvas" width="200" height="200">
+		Your browser does not support html5!
+	</canvas>
+
+	<body>
+		Hello, web! <br>
+		
+		<script type="text/javascript">
+			function draw(radians)
+			{
+				var canvas = document.getElementById("canvas");
+				var context = canvas.getContext("2d");
+				
+				context.fillStyle = "yellow";
+				context.beginPath();
+				context.arc(95, 85, 40, 0, radians * Math.PI);
+				context.closePath();
+				context.fill();
+				context.lineWidth = 2;
+				context.stroke();
+			}
+			
+			draw(.5);
+			
+			
+			
+			//document.write("Hello, Javascript!");
+			
+			
+		</script>
+		
+	</body>
 
-    <script src="https://maps.googleapis.com/maps/api/js"> </script>
-
-    <script>
-      var map;
-      var trains = []; //train object: {'line': 'Red', 'current': google.maps.Marker(), 'future': google.maps.LatLng(), 'id' : 1234}
-
-      var lines = ['Blue', 'Red', 'Orange', 'Green-B', 'Green-C', 'Green-D', 'Green-E',
-      'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
-      'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
-      'CR-Newburyport', 'CR-Providence', 'CR-Worcester'];
-
-
-
-      var lineOverlay = ['blue', 'red-ashmont', 'red-braintree', 'orange', 'green-b',
-      'green-c', 'green-d', 'green-e', 'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
-      'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
-      'CR-Newburyport', 'CR-Providence', 'CR-Providence-Stoughton', 'CR-Worcester'];
-
-
-
-      var colors = {'blue': '#00A3E7', 'red-ashmont': '#FF0000', 'red-braintree': '#FF0000',
-       'orange': '#FFA500', 'green-b': '#00B351', 'green-c': '#00B351', 'green-d': '#00B351',
-       'green-e': '#00B351'};
-
-      google.maps.event.addDomListener(window, 'load', initialize);
-
-
-      //get new train info
-      setInterval(function()
-      {
-        //get new trains
-        loadTrains();
-
-        console.log("new trains");
-
-        moveTrains();
-
-      }, 30000);
-
-      var inTrains = function(id)
-      {
-        for(var i in trains)
-        {
-          if(trains[i].id == id)
-          {
-            return true;
-          }
-        }
-
-        return false;
-      }
-
-
-      function moveTrains()
-      {
-        //move old trains to new trains
-        var count = 0;
-
-        var intervalid = setInterval(function()
-        {
-          count++;
-          if(count == 30)
-          {
-            clearInterval(intervalid);
-          }
-
-          for(var i in trains)
-          {
-            var train = trains[i];
-
-            var changeLat = train.future.lat() - train.current.getPosition().lat();
-            var changeLng = train.future.lng() - train.current.getPosition().lng();
-
-            train.current.setPosition(new google.maps.LatLng(
-              train.current.getPosition().lat() + changeLat/30,
-              train.current.getPosition().lng() + changeLng/30));
-
-
-          }
-        }, 50);
-      }
-
-      //function to initialize
-      function initialize()
-      {
-        var boston = new google.maps.LatLng(42.3479, -71.087667);
-
-        var mapCanvas = document.getElementById('map-canvas');
-        var mapOptions =
-        {
-          //center: new google.maps.LatLng(44.5403, -78.5463),
-          center:boston,
-          zoom: 13,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        map = new google.maps.Map(mapCanvas, mapOptions);
-
-        //make roads less invasive
-        var styles = [
-          {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [
-              { lightness: 100 },
-              { visibility: "simplified" }
-            ]
-          }
-        ];
-        map.setOptions({styles: styles});
-
-
-          google.maps.event.addListenerOnce(map, 'idle', function()
-          {
-            loadTrains();
-
-            //load subway lines
-            for(var i in lineOverlay)
-            {
-              var color;
-
-              if(lineOverlay[i].includes('CR'))
-              {
-                color = '#F524FB';
-              }
-              else
-              {
-                  color = colors[lineOverlay[i]];
-              }
-
-              loadLine(lineOverlay[i], color);
-            }
-          });
-
-
-          //create control panel
-          for(var i in lines)
-          {
-            document.getElementById('controlpanel').innerHTML += lines[i] + ': <input type=\"checkbox\" name=\"' + lines[i] + '\" onchange=\"handle(this);\" checked/> <br>';
-          }
-      }
-
-      function loadTrains()
-      {
-        //load subway trains
-        for(var i in lines)
-        {
-          loadDataForTrain(lines[i]);
-        }
-      }
-
-      function loadDataForTrain(line)
-      {
-        //get data
-        var request = new XMLHttpRequest();
-        //console.log('Request: ' + 'trains/' + line + '.txt');
-        request.open('GET', 'trains/' + line + '.txt', false);
-        request.send();
-
-        //determine url for image
-        var url = '';
-        if(line.includes('CR')) { url = 'images/commuter.png'; }
-        else { url = 'images/' + line + '.png'; }
-
-        var image =
-        {
-          url: url,
-          anchor: new google.maps.Point(15,15)
-        }
-
-        var coords = request.responseText.split('\n');
-
-        for(var i in coords)
-        {
-
-
-          var train = new Object();
-
-          var nums = coords[i].split(" ");
-          var lat = nums[0];
-          var lng = nums[1];
-          var id = nums[2];
-
-
-
-          //if this train is new, add and make 'current' and 'future' the same
-          //if this train is not new, just change 'future'
-
-          //if new
-          if(!inTrains(id))
-          {
-            var marker = new google.maps.Marker(
-              {
-                position: new google.maps.LatLng(lat, lng),
-                icon: image,
-                title: '\'' + line + '\'',
-                map: map
-              }
-            );
-
-            train.line = line;
-            train.current = marker;
-            train.id = id;
-            train.future = marker.getPosition();
-            trains.push(train);
-          }
-          else
-          {
-            //find current train and change future
-            for(var i in trains)
-            {
-              if(trains[i].id == id)
-              {
-                trains[i].future = new google.maps.LatLng(lat, lng);
-              }
-            }
-          }
-
-        }
-      }
-
-      function loadLine(line, color)
-      {
-        var path = [];
-
-        var request = new XMLHttpRequest();
-
-      //  console.log("Getting: " + 'routes/' + line + '.txt');
-        request.open('GET', 'routes/' + line + '.txt', false);
-        request.send();
-
-        var data = request.responseText;
-        data = data.split('\n');
-
-        for(var i = 0; i < data.length - 1; i++)
-        {
-          var pieces = data[i].split(' ');
-
-          var lat = pieces[pieces.length-2];
-          var lng = pieces[pieces.length-1];
-          var place = new google.maps.LatLng(lat, lng);
-
-          path.push(place);
-
-
-          var name = '';
-
-          for(var j = 0; j < pieces.length - 2; j++)
-          {
-            name += pieces[j];
-          }
-
-          //marker to represent station
-          var marker = new google.maps.Marker(
-            {
-              position: place,
-              icon:
-              {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 5,
-              },
-              map: map,
-              title: name
-            }
-          );
-
-        }
-
-      //  console.log('line: ' + line + "  " + path);
-
-        //put path on map
-        var pathOnMap = new google.maps.Polyline(
-          {
-            path: path,
-            geodesic: true,
-            strokeColor: color,
-            strokeOpacity: 1.0,
-            strokeWeight: 4
-          }
-        );
-
-        pathOnMap.setMap(map);
-
-      }
-
-      function handle(element)
-      {
-        console.log(element);
-
-        if(element.checked)
-        {
-          //add the trains
-          loadDataForTrain(element.name);
-        }
-        else
-        {
-            //remove the trains
-            for(var i in trains)
-            {
-              if(trains[i].line == element.name)
-              {
-                trains[i].current.setMap(null);
-                trains.splice(i, 1);
-              }
-            }
-        }
-      }
-
-    </script>
-  </head>
-  <body>
-    <div id="map-canvas"></div>
-    <div id="controlpanel"></div>
-  </body>
 </html>

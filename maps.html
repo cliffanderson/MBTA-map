@@ -43,8 +43,6 @@
 
       google.maps.event.addDomListener(window, 'load', initialize);
 
-
-      //get new train info
       setInterval(function()
       {
         //get new trains
@@ -54,7 +52,7 @@
 
         moveTrains();
 
-      }, 300000000000000);
+      }, 30000);
 
       var inTrains = function(id, line)
       {
@@ -148,6 +146,13 @@
 
               loadLine(lineOverlay[i]);
             }
+
+            var elements = document.getElementById('controlpanel').children;
+            for(var i in elements)
+            {
+              console.log(elements[i]);
+            }
+
           });
 
 
