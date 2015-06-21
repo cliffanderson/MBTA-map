@@ -146,13 +146,6 @@
 
               loadLine(lineOverlay[i]);
             }
-
-            var elements = document.getElementById('controlpanel').children;
-            for(var i in elements)
-            {
-              console.log(elements[i]);
-            }
-
           });
 
 
@@ -195,16 +188,12 @@
 
         for(var i = 0; i < coords.length - 1; i++)
         {
-
-
           var train = new Object();
 
           var nums = coords[i].split(" ");
           var lat = nums[0];
           var lng = nums[1];
           var id = nums[2];
-
-
 
           //if this train is new, add and make 'current' and 'future' the same
           //if this train is not new, just change 'future'
@@ -229,13 +218,12 @@
           }
           else
           {
-            console.log("Updating: " + id)
             //find current train and change future
-            for(var i in trains)
+            for(var j in trains)
             {
-              if(trains[i].id == id)
+              if(trains[j].id == id)
               {
-                trains[i].future = new google.maps.LatLng(lat, lng);
+                trains[j].future = new google.maps.LatLng(lat, lng);
               }
             }
           }
@@ -322,10 +310,6 @@
 
       function handle(element)
       {
-        console.log("Handling: " + element.name);
-      //  console.log(element);
-        //console.log('Trains: ' + trains.length);
-
         if(element.checked)
         {
           //add the trains
