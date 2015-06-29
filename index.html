@@ -201,8 +201,6 @@
           //if new
           if(!inTrains(id, line))
           {
-            console.log("New: " + id + " " + line);
-
             var marker = new google.maps.Marker(
               {
                 position: new google.maps.LatLng(lat, lng),
@@ -223,15 +221,9 @@
             //find current train and change future
             for(var j in trains)
             {
-              if(trains[j].id == id && trains[j].line == line)
+              if(trains[j].id == id)
               {
-                console.log(trains[j].id + " ===== " + id + " && " + trains[j].line + " ===== " + line);
-
                 trains[j].future = new google.maps.LatLng(lat, lng);
-              }
-              else
-              {
-                console.log(trains[j].id + " != " + id + " && " + trains[j].line + " != " + line);
               }
             }
           }
@@ -393,7 +385,7 @@
       {
         var request = new XMLHttpRequest();
 
-        request.open('GET', url, false);
+        request.open('GET', url + "?x=" + Math.random() * 100000000000000, false);
         request.send();
 
         return request.responseText;
