@@ -225,6 +225,8 @@
             {
               if(trains[j].id == id && trains[j].line == line)
               {
+                console.log(trains[j].id + " ===== " + id + " && " + trains[j].line + " ===== " + line);
+
                 trains[j].future = new google.maps.LatLng(lat, lng);
               }
               else
