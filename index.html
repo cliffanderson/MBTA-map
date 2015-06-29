@@ -202,7 +202,7 @@
           if(!inTrains(id, line))
           {
             console.log("New: " + id + " " + line);
-            
+
             var marker = new google.maps.Marker(
               {
                 position: new google.maps.LatLng(lat, lng),
@@ -223,7 +223,7 @@
             //find current train and change future
             for(var j in trains)
             {
-              if(trains[j].id == id)
+              if(trains[j].id == id && trains[j].line == line)
               {
                 trains[j].future = new google.maps.LatLng(lat, lng);
               }
