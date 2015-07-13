@@ -3,7 +3,6 @@
     <style>
       #map-canvas
       {
-
         float: left;
         width: 80%;
         height: 90%;
@@ -17,11 +16,21 @@
     </style>
 
     <script src="https://maps.googleapis.com/maps/api/js"> </script>
-
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"> </script>
     <script>
       var map;
       var trains = []; //train object: {'line': 'Red', 'current': google.maps.Marker(), 'future': google.maps.LatLng(), 'id' : 1234}
       var overlays = {}; //overlay object: 'Blue': {'poly': google.maps.PolyLine(), 'markers': google.maps.Marker()[]}
+
+
+      var socket = io();
+
+      socket.on('trains', function(data)
+      {
+        
+      });
+
+
 
       var lines = ['Blue', 'Red', 'Orange', 'Green-B', 'Green-C', 'Green-D', 'Green-E',
       'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
