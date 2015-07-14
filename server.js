@@ -40,7 +40,7 @@ http.listen(3000, function()
 
 setInterval(function()
 {
-  io.emit('trains', data);
+  io.emit('trains', 'data');
 }, 30 * 1000);
 
 

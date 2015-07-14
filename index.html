@@ -20,17 +20,20 @@
     <script>
       var map;
       var trains = []; //train object: {'line': 'Red', 'current': google.maps.Marker(), 'future': google.maps.LatLng(), 'id' : 1234}
-      var overlays = {}; //overlay object: 'Blue': {'poly': google.maps.PolyLine(), 'markers': google.maps.Marker()[]}
+      var overlays = []; //overlay object: 'Blue': {'poly': google.maps.PolyLine(), 'markers': google.maps.Marker()[]}
+      var images = [];
 
-
-      var socket = io();
-
-      socket.on('trains', function(data)
+      var isLine = function(s)
       {
-
-      });
-
-
+        if(s.includes("."))
+        {
+          return false;
+        }
+        else
+        {
+            return true;
+        }
+      }
 
       var lines = ['Blue', 'Red', 'Orange', 'Green-B', 'Green-C', 'Green-D', 'Green-E',
       'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
@@ -50,16 +53,8 @@
 
       setInterval(function()
       {
-        //get new trains
-        loadTrains();
-
-        console.log("new trains");
-
         moveTrains();
-
       }, 30000);
-
-
 
       var inTrains = function(id, line)
       {
@@ -70,12 +65,8 @@
             return true;
           }
         }
-
         return false;
       }
-
-
-
 
       function moveTrains()
       {
@@ -103,8 +94,6 @@
           }
         }, 50);
       }
-
-
 
       //function to initialize
       function initialize()
@@ -134,10 +123,89 @@
         ];
         map.setOptions({styles: styles});
 
+        //add images to array
+        for(var i in lines)
+        {
+          var url;
+          if(lines[i].includes('CR'))
+          {
+            url = 'images/commuter.png';
+          }
+          else
+          {
+            url = 'images/' + lines[i] + '.png';
+          }
+
+          images[lines] =
+          {
+
+              url: url,
+              anchor: new google.maps.Point(15,15)
+            
+          };
+        }
+
 
           google.maps.event.addListenerOnce(map, 'idle', function()
           {
-            loadTrains();
+            var socket = io();
+
+            socket.on('trains', function(info)
+            {
+              //put trains on map
+              var data = info.split('\n');
+              var line;
+
+              for(var i = 0; i < data.length - 1; i++)
+              {
+                if(isLine(data[i]))
+                {
+                  line = data[i];
+                  continue;
+                }
+
+                var nums = data[i].split(' ');
+
+                var train = new Object();
+
+                var lat = nums[0];
+                var lng = nums[1];
+                var id = nums[2];
+
+                //if this train is new, add and make 'current' and 'future' the same
+                //if this train is not new, just change 'future'
+
+                //if new
+                if(!inTrains(id, line))
+                {
+                  var marker = new google.maps.Marker(
+                    {
+                      position: new google.maps.LatLng(lat, lng),
+                      icon: image,
+                      title: id,
+                      map: map
+                    }
+                  );
+
+                  train.line = line;
+                  train.current = marker;
+                  train.id = id;
+                  train.future = marker.getPosition();
+                  trains.push(train);
+                }
+                else
+                {
+                  //find current train and change future
+                  for(var j in trains)
+                  {
+                    if(trains[j].id == id)
+                    {
+                      trains[j].future = new google.maps.LatLng(lat, lng);
+                    }
+                  }
+                }
+              }
+            });
 
             //load subway lines
             for(var i in lineOverlay)
@@ -166,7 +234,7 @@
       }
 
 
-
+      /*
       function loadTrains()
       {
         //load subway trains
@@ -174,7 +242,7 @@
         {
           loadDataForTrain(lines[i]);
         }
-      }
+      }*/
 
       function loadDataForTrain(line)
       {
@@ -201,7 +269,6 @@
         {
           var train = new Object();
 
-          var nums = coords[i].split(" ");
           var lat = nums[0];
           var lng = nums[1];
           var id = nums[2];
