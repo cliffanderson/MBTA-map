@@ -27,7 +27,7 @@
 
       socket.on('trains', function(data)
       {
-        
+
       });
 
 
@@ -37,14 +37,10 @@
       'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
       'CR-Newburyport', 'CR-Providence', 'CR-Worcester'];
 
-
-
       var lineOverlay = ['Blue', 'Red-ashmont', 'Red-braintree', 'Orange', 'Green-B',
       'Green-C', 'Green-D', 'Green-E', 'CR-Fairmount', 'CR-Fitchburg', 'CR-Franklin', 'CR-Greenbush',
       'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
       'CR-Newburyport', 'CR-Providence', 'CR-Providence-Stoughton', 'CR-Worcester'];
-
-
 
       var colors = {'Blue': '#00A3E7', 'Red-ashmont': '#FF0000', 'Red-braintree': '#FF0000',
        'Orange': '#FFA500', 'Green-B': '#00B351', 'Green-C': '#00B351', 'Green-D': '#00B351',
@@ -63,6 +59,8 @@
 
       }, 30000);
 
+
+
       var inTrains = function(id, line)
       {
         for(var i in trains)
@@ -75,6 +73,8 @@
 
         return false;
       }
+
+
 
 
       function moveTrains()
@@ -100,11 +100,11 @@
             train.current.setPosition(new google.maps.LatLng(
               train.current.getPosition().lat() + changeLat/30,
               train.current.getPosition().lng() + changeLng/30));
-
-
           }
         }, 50);
       }
+
+
 
       //function to initialize
       function initialize()
@@ -164,6 +164,8 @@
             document.getElementById('controlpanel').innerHTML += lines[i] + ': <input type=\"checkbox\" name=\"' + lines[i] + '\" onchange=\"handle(this);\" checked/> <br>';
           }
       }
+
+
 
       function loadTrains()
       {
