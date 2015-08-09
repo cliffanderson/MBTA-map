@@ -41,9 +41,9 @@ app.all('*', function(req, res, next)
 });
 
 //start the server
-http.listen(3000, function()
+http.listen(80, function()
 {
-  console.log('Now listening on *:3000');
+  console.log('Now listening on *:80');
 });
 
 
