@@ -52,7 +52,7 @@ setInterval(function()
 {
   io.emit('trains', DATA);
   console.log("EMITTING");
-}, 120 * 1000);
+}, 180 * 1000);
 
 
 io.on('connection', function(socket)
@@ -62,13 +62,14 @@ io.on('connection', function(socket)
 });
 
 //setup child process for train data
-var process = exec('java -jar MBTA.jar 120000');
+var process = exec('java -jar MBTA.jar 180000');
 
 process.stdout.on('data', function(chunk)
 {
+  console.log("Got: " + chunk.length + " bytes");
   if(chunk.length > 10)
   {
     DATA = chunk;
-    console.log("Got " + chunk.length + " bytes");
+    //console.log("Got " + chunk.length + " bytes");
   }
 });
