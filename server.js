@@ -56,6 +56,7 @@ var trains = ['Green-B', 'Green-C', 'Green-D', 'Green-E', 'Blue', 'Red', 'Orange
 
 var fetchTrainData = function(route, callback)
 {
+	var rawData = '';
 	var finishedData = route;
 	finishedData += '\n';
 	
@@ -67,14 +68,14 @@ var fetchTrainData = function(route, callback)
 		res.setEncoding('utf8');
 		res.on('data', function(data)
 		{
-			finishedData += data;
+			rawData += data;
 		});
 		
 		res.on('end', function()
 		{
-			if(data.indexOf('error') === -1)
+			if(rawData.indexOf('error') === -1)
 			{
-				var obj = JSON.parse(data);
+				var obj = JSON.parse(rawData);
 				var directions = obj.direction; //array of size 2 (inbound and outbound)
 				for(var dir = 0; dir < directions.length; dir++)
 				{
