@@ -67,15 +67,12 @@ var fetchTrainData = function(route, callback)
 		res.setEncoding('utf8');
 		res.on('data', function(data)
 		{
-<<<<<<< HEAD
 			finishedData += data;
 		});
 		
 		res.on('end', function()
 		{
-=======
 			console.log(typeof data);
->>>>>>> a579b80c16f63ec61ec9468e532c3668405eb68f
 			console.log('Data received: ' + data);
 			if(data.indexOf('error') === -1)
 			{
