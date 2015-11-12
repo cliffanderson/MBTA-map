@@ -218,13 +218,6 @@
               loadLine(lineOverlay[i]);
             }
           });
-
-			/*
-          //create control panel
-          for(var i in lines)
-          {
-            document.getElementById('controlpanel').innerHTML += lines[i] + ': <input type=\"checkbox\" name=\"' + lines[i] + '\" onchange=\"handle(this);\" checked/> <br>';
-          } */
       }
 
       function loadLine(line)
@@ -303,79 +296,6 @@
 
         overlays[line] = overlay;
       }
-
-      function handle(element)
-      {
-        if(element.checked)
-        {
-          //add the trains
-          loadDataForTrain(element.name);
-
-          if(element.name == 'Red')
-          {
-            loadLine('Red-ashmont');
-            loadLine('Red-braintree');
-          }
-          else
-          {
-              loadLine(element.name);
-          }
-        }
-        else
-        {
-            var toRemove = [];
-
-            //remove the trains from map
-            for(var i in trains)
-            {
-              if(trains[i].line == element.name)
-              {
-                trains[i].current.setMap(null);
-                toRemove.push({'id': trains[i].id, 'line': trains[i].line});
-              }
-            }
-
-            //remove all from trains array
-            for(var j = 0; j < toRemove.length; j++)
-            {
-              var id = toRemove[j].id;
-              var line = toRemove[j].line;
-
-              for(var k in trains)
-              {
-                if(trains[k].id == id && trains[k].line == line)
-                {
-                  trains.splice(k, 1);
-                  break;
-                }
-              }
-            }
-
-            if(element.name == 'Red')
-            {
-              removeOverlayLine('Red-ashmont');
-              removeOverlayLine('Red-braintree')
-            }
-            else
-            {
-              removeOverlayLine(element.name);
-            }
-          }
-        }
-
-      function removeOverlayLine(line)
-      {
-        var overlay = overlays[line];
-        //remove path
-        overlay.poly.setMap(null);
-
-        //remove markers
-        for(var y = 0; y < overlay.markers.length; y++)
-        {
-          overlay.markers[y].setMap(null);
-        }
-      }
-
 
       function requestData(url)
       {
