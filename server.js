@@ -88,9 +88,11 @@ var fetchTrainData = function(route, callback)
 		});
 	});
 }
+	console.log('called');
 
 setInterval(function()
 {
+	console.log('connected clients: ' + connectedClients);
 	if(connectedClients !== 0)
 	{
 		for(var i = 0; i < trains.length; i++)
