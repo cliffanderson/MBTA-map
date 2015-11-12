@@ -47,7 +47,6 @@ var publishData = function(finishedData)
 		//send to clients
 		console.log('Sending to clients...');
 		io.emit('trains', totalData);
-		console.log('emitting data');
 		
 		numTrains = 19;
 		DATA = totalData;
@@ -102,24 +101,22 @@ var fetchTrainData = function(route, callback)
 
 setInterval(function()
 {
-	loadAllTrains();
-}, 30000);
-
-var loadAllTrains = function()
-{
 	console.log('connected clients: ' + connectedClients);
 	if(connectedClients !== 0)
 	{
-		for(var i = 0; i < trains.length; i++)
-		{
-			var route = trains[i];
-			fetchTrainData(route, publishData);
-		}
+		loadAllTrains();
 	}
+}, 30000);
+
+var loadAllTrains = function()
+{	
+	for(var i = 0; i < trains.length; i++)
+	{
+		var route = trains[i];
+		fetchTrainData(route, publishData);
+	}
+	
 }
 
 //initial load
 loadAllTrains();
-
-
-
