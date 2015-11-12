@@ -5,13 +5,15 @@ var exec = require('child_process').exec;
 var fs = require('fs');
 var http = require('http');
 
-var DATA = '';
 var connectedClients = 0;
+
+var numTrains = 19;
+var totalData = '';
 
 //handle connections
 io.on('connection', function(socket)
 {
-	socket.emit('trains', DATA);
+	socket.emit('trains', totalData);
 	console.log('A client connected!');
 	connectedClients++;
 	
@@ -31,8 +33,7 @@ if(api_key === undefined)
 	console.log("ERROR: no api key!");
 }
 
-var numTrains = 19;
-var totalData = '';
+
 var publishData = function(finishedData)
 {
 	numTrains--;
