@@ -14,6 +14,7 @@ var totalData = '';
 io.on('connection', function(socket)
 {
 	socket.emit('trains', totalData);
+	console.log('Sent ' + totalData.length + ' bytes to the client ');
 	console.log('A client connected!');
 	connectedClients++;
 	
