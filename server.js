@@ -67,6 +67,11 @@ var fetchTrainData = function(route, callback)
 		res.setEncoding('utf8');
 		res.on('data', function(data)
 		{
+			finishedData += data;
+		});
+		
+		res.on('end', function()
+		{
 			console.log('Data received: ' + data);
 			if(data.indexOf('error') === -1)
 			{
