@@ -1,75 +1,104 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(1234);
+
 
 var exec = require('child_process').exec;
 var fs = require('fs');
+var http = require('http');
 
 var DATA = '';
+var connectedClients = 0;
 
-//handle all web stuff
-app.get('/', function(req, res)
-{
-  res.sendFile(__dirname + '/index.html');
-});
-app.all('/MBTA-map/*', function(req, res, next)
-{
-  var path = req.path;
-  var file = path.replace('/MBTA-map/', '');
-
-  console.log('MBTA-map request: ' + file);
-
-  //if the request ends with '/' then check for existance of index.html
-  if(file.indexOf('/', file.length - 1) !== -1)
-  {
-    file += 'index.html';
-  }
-
-  if(!fs.existsSync(__dirname + '/MBTA-map/' + file))
-  {
-    res.send('Error - 404');
-  }
-  else
-  {
-    res.sendFile(__dirname + '/MBTA-map/' + file);
-  }
-});
-
-app.all('*', function(req, res, next)
-{
-  res.send('Error - 404');
-});
-
-//start the server
-http.listen(80, function()
-{
-  console.log('Now listening on *:80');
-});
-
-
-//handle io stuff
-setInterval(function()
-{
-  io.emit('trains', DATA);
-  console.log("EMITTING");
-}, 180 * 1000);
-
-
+//handle connections
 io.on('connection', function(socket)
 {
-  socket.emit('trains', DATA);
-  console.log("A client connected");
+	socket.emit('trains', DATA);
+	console.log('A client connected!');
+	connectedClients++;
+	
+	//handle disconnections
+	socket.on('disconnect', function()
+	{
+		console.log('A client disconnected');
+		connectedClients--;
+	});
 });
 
-//setup child process for train data
-var process = exec('java -jar MBTA.jar 180000');
 
-process.stdout.on('data', function(chunk)
+//make calls to mbta api for train location data
+var api_key = process.argv[2];
+if(api_key === undefined)
 {
-  console.log("Got: " + chunk.length + " bytes");
-  if(chunk.length > 10)
-  {
-    DATA = chunk;
-    //console.log("Got " + chunk.length + " bytes");
-  }
-});
+	console.log("ERROR: no api key!");
+}
+
+var numTrains = 19;
+var totalData = '';
+var publishData = function(finishedData)
+{
+	numTrains--;
+	totalData += finishedData;
+	
+	if(numTrains === 0)
+	{
+		//send to clients
+		io.emit('trains', totalData);
+		console.log('emitting data');
+		
+		numTrains = 19;
+		totalData = '';
+	}
+}
+
+var trains = ['Green-B', 'Green-C', 'Green-D', 'Green-E', 'Blue', 'Red', 'Orange', 
+'CR-Fairmount', 'CR-Fitchburg', 'CR-Worcester', 'CR-Franklin', 'CR-Greenbush',
+'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
+'CR-Newburyport', 'CR-Providence'];
+
+var fetchTrainData = function(route, callback)
+{
+	var finishedData = route;
+	finishedData += '\n';
+	
+	var url = 'http://realtime.mbta.com/developer/api/v2/vehiclesbyroute?api_key=' + api_key +
+	'&route=' + route + '&format=json';
+	
+	http.get(url, function(res)
+	{
+		res.setEncoding('utf8');
+		res.on('data', function(data)
+		{
+			if(data.indexOf('error') === -1)
+			{
+				var obj = JSON.parse(data);
+				var directions = obj.direction; //array of size 2 (inbound and outbound)
+				for(var dir = 0; dir < directions.length; dir++)
+				{
+					var trips = directions[dir].trip; //array of trips
+					for(var trip = 0; trip < trips.length; trip++)
+					{
+						var vehicle = trips[trip].vehicle;
+						finishedData += vehicle.vehicle_lat + ' ' + vehicle.vehicle_lon + ' ' + vehicle.vehicle_id + '\n';
+					}
+				}
+				//this is where the data is fully formed
+				//there are issues with asynchronusly getting data from the web
+				callback(finishedData);
+			}
+		});
+	});
+}
+
+setInterval(function()
+{
+	if(connectedClients !== 0)
+	{
+		for(var i = 0; i < trains.length; i++)
+		{
+			var route = trains[i];
+			fetchTrainData(route, publishData);
+		}
+	}
+}, 30000);
+
+
+

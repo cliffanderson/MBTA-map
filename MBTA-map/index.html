@@ -140,7 +140,7 @@
 
           google.maps.event.addListenerOnce(map, 'idle', function()
           {
-            var socket = io();
+            var socket = io('http://cliffanderson.net:1234');
 
             socket.on('trains', function(info)
             {
