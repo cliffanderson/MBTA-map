@@ -9,12 +9,13 @@ var connectedClients = 0;
 
 var numTrains = 19;
 var totalData = '';
+var DATA = ''; //stores most recent complete totalData
 
 //handle connections
 io.on('connection', function(socket)
 {
-	socket.emit('trains', totalData);
-	console.log('Sent ' + totalData.length + ' bytes to the client ');
+	socket.emit('trains', DATA);
+	console.log('Sent ' + DATA.length + ' bytes to the client ');
 	console.log('A client connected!');
 	connectedClients++;
 	
@@ -34,6 +35,9 @@ if(api_key === undefined)
 	console.log("ERROR: no api key!");
 }
 
+loadAllTrains();
+
+
 
 var publishData = function(finishedData)
 {
@@ -42,11 +46,14 @@ var publishData = function(finishedData)
 	
 	if(numTrains === 0)
 	{
+		console.log('All train data loaded');
 		//send to clients
+		console.log('Sending to clients...');
 		io.emit('trains', totalData);
 		console.log('emitting data');
 		
 		numTrains = 19;
+		DATA = totalData;
 		totalData = '';
 	}
 }
@@ -95,9 +102,13 @@ var fetchTrainData = function(route, callback)
 		});
 	});
 }
-	console.log('called');
 
 setInterval(function()
+{
+	loadAllTrains();
+}, 30000);
+
+var loadAllTrains = function()
 {
 	console.log('connected clients: ' + connectedClients);
 	if(connectedClients !== 0)
@@ -108,7 +119,7 @@ setInterval(function()
 			fetchTrainData(route, publishData);
 		}
 	}
-}, 30000);
+}
 
 
 
