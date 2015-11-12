@@ -35,9 +35,6 @@ if(api_key === undefined)
 	console.log("ERROR: no api key!");
 }
 
-loadAllTrains();
-
-
 
 var publishData = function(finishedData)
 {
@@ -120,6 +117,9 @@ var loadAllTrains = function()
 		}
 	}
 }
+
+//initial load
+loadAllTrains();
 
 
 
