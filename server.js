@@ -72,8 +72,6 @@ var fetchTrainData = function(route, callback)
 		
 		res.on('end', function()
 		{
-			console.log(typeof data);
-			console.log('Data received: ' + data);
 			if(data.indexOf('error') === -1)
 			{
 				var obj = JSON.parse(data);
