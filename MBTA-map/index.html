@@ -137,7 +137,7 @@
 
             socket.on('trains', function(info)
             {
-              console.log("Got: " + info);
+              //console.log("Got: " + info);
               //put trains on map
               var data = info.split('\n');
               var line;
@@ -294,7 +294,9 @@
       {
         var request = new XMLHttpRequest();
 
-        request.open('GET', url + "?x=" + Math.random() * 100000000000000, false);
+        console.log("GET " + url);
+
+        request.open('GET', url, false);
         request.send();
 
         return request.responseText;
