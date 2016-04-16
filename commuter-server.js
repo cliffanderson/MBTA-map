@@ -1,13 +1,15 @@
-var io = require('socket.io')(1234);
-
-
-var exec = require('child_process').exec;
+var io = require('socket.io')(1235);
 var fs = require('fs');
 var http = require('http');
 
 var connectedClients = 0;
 
-var numTrains = 19;
+var trains = ['CR-Fairmount', 'CR-Fitchburg', 'CR-Worcester', 'CR-Franklin', 'CR-Greenbush',
+'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
+'CR-Newburyport', 'CR-Providence'];
+
+var numTrains = trains.length;
+
 var totalData = '';
 var DATA = ''; //stores most recent complete totalData
 
@@ -48,16 +50,11 @@ var publishData = function(finishedData)
 		console.log('Sending to clients...');
 		io.emit('trains', totalData);
 		
-		numTrains = 19;
+		numTrains = trains.length;
 		DATA = totalData;
 		totalData = '';
 	}
 }
-
-var trains = ['Green-B', 'Green-C', 'Green-D', 'Green-E', 'Blue', 'Red', 'Orange', 
-'CR-Fairmount', 'CR-Fitchburg', 'CR-Worcester', 'CR-Franklin', 'CR-Greenbush',
-'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
-'CR-Newburyport', 'CR-Providence'];
 
 var fetchTrainData = function(route, callback)
 {
