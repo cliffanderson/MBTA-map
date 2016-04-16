@@ -4,9 +4,7 @@ var http = require('http');
 
 var connectedClients = 0;
 
-var trains = ['CR-Fairmount', 'CR-Fitchburg', 'CR-Worcester', 'CR-Franklin', 'CR-Greenbush',
-'CR-Haverhill', 'CR-Kingston', 'CR-Lowell', 'CR-Middleborough', 'CR-Needham',
-'CR-Newburyport', 'CR-Providence'];
+var trains = ['Green-B', 'Green-C', 'Green-D', 'Green-E', 'Blue', 'Red', 'Orange'];
 
 var numTrains = trains.length;
 

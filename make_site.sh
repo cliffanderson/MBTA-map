@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 echo "Delete existing site"
 rm -r /var/www/html/MBTA-map/
 
