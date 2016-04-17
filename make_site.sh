@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#Script to move all web files to the correct locations on disk
+
 echo "Delete existing site"
 rm -r /var/www/html/MBTA-map/
 
