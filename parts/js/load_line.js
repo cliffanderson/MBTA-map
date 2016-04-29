@@ -1,3 +1,9 @@
+    
+    /* Function to determine color of train line overlay and place markers at the stations
+        
+       Arguments:
+                 Line: The name of the line to load (e.g. 'Green-E')
+    */
     function loadLine(line)
     {
         var color;

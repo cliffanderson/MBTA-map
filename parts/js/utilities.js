@@ -1,3 +1,10 @@
+    /*
+       Function to request a text-based resource on the web and return its contents
+
+       Arguments:
+		 url: The url of the resource (e.g. 'routes/Orange.txt')
+
+    */
     function requestData(url)
     {
         var request = new XMLHttpRequest();
@@ -8,8 +15,13 @@
     }
 
 
+    /*
+       Function to determine if a string is the name of a train line
 
-    var isLine = function(s)
+       Arguments:
+                 s: The string to test (e.g. 'Blue' or '42.34978 -71.07855 3652')
+    */
+    function isLine(s)
     {
         if(s.includes("."))
         {
@@ -22,7 +34,14 @@
     }
 
 
-    var inTrains = function(id, line)
+    /*
+       Function to determine if a specific train is in the array of trains on the map
+
+       Arguments:
+                 id: The id of the train (e.g. 3692)
+                 line: The line of the train (e.g. 'Red')
+    */
+    function inTrains(id, line)
     {
         for(var i in trains)
         {
