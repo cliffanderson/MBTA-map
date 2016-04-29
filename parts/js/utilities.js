@@ -53,3 +53,14 @@
 
         return false;
     }
+
+
+
+    setInterval(function()
+    {
+	var counter = document.getElementById("counter")
+	var num = counter.innerHTML
+	num = num - 1
+	counter.innerHTML = num
+    }, 1000)
+

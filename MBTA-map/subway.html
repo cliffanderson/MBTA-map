@@ -89,7 +89,8 @@
 
             socket.on('trains', function(info)
             {
-                //console.log("Got: " + info);
+		//update counter
+		document.getElementById("counter").innerHTML = 30;
                 //put trains on map
                 var data = info.split('\n');
                 var line;
@@ -330,10 +331,22 @@
         return false;
     }
 
+
+
+    setInterval(function()
+    {
+	var counter = document.getElementById("counter")
+	var num = counter.innerHTML
+	num = num - 1
+	counter.innerHTML = num
+    }, 1000)
+
+
 </script>
     </head>
     <body>
         <div id="map-canvas"></div>
-        <div id="counter">Test</div>
+	<div>Time until new data:</div>
+        <div id="counter">30</div>
     </body>
 </html>

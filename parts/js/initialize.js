@@ -66,7 +66,8 @@
 
             socket.on('trains', function(info)
             {
-                //console.log("Got: " + info);
+		//update counter
+		document.getElementById("counter").innerHTML = 30;
                 //put trains on map
                 var data = info.split('\n');
                 var line;
