@@ -1,13 +1,14 @@
-      function loadLine(line)
-      {
+    function loadLine(line)
+    {
         var color;
+
         if(line.includes('CR'))
         {
-          color = '#F524FB';
+            color = '#F524FB';
         }
         else
         {
-          color = colors[line];
+            color = colors[line];
         }
 
 
@@ -20,52 +21,50 @@
 
         for(var i = 0; i < data.length; i++)
         {
-          if(data[i] == '') continue;
+            if(data[i] == '') continue;
 
-          var pieces = data[i].split(' ');
+            var pieces = data[i].split(' ');
 
-          var lat = pieces[pieces.length-2];
-          var lng = pieces[pieces.length-1];
-          var place = new google.maps.LatLng(lat, lng);
+            var lat = pieces[pieces.length-2];
+            var lng = pieces[pieces.length-1];
+            var place = new google.maps.LatLng(lat, lng);
 
-          path.push(place);
+            path.push(place);
 
 
-          var name = '';
+            var name = '';
 
-          for(var j = 0; j < pieces.length - 2; j++)
-          {
-            name += pieces[j];
-          }
-
-          //marker to represent station
-          var marker = new google.maps.Marker(
+            for(var j = 0; j < pieces.length - 2; j++)
             {
-              position: place,
-              icon:
-              {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 5,
-              },
-              map: map,
-              title: name
+                name += pieces[j];
             }
-          );
 
-          markers.push(marker);
+            //marker to represent station
+            var marker = new google.maps.Marker(
+            {
+                position: place,
+                icon:
+                {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 5,
+                },
+                map: map,
+                title: name
+            });
+
+            markers.push(marker);
 
         }
 
         //put path on map
         var pathOnMap = new google.maps.Polyline(
-          {
+        {
             path: path,
             geodesic: true,
             strokeColor: color,
             strokeOpacity: 1.0,
             strokeWeight: 4
-          }
-        );
+        });
 
         pathOnMap.setMap(map);
 
@@ -73,4 +72,5 @@
         overlay.markers = markers;
 
         overlays[line] = overlay;
-        }
+    }
+
