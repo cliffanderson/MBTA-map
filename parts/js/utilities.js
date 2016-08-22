@@ -23,7 +23,7 @@
     */
     function isLine(s)
     {
-        return s.includes(".");
+        return !s.includes(".");
     }
 
 
