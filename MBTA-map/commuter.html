@@ -84,7 +84,7 @@
         //Funtion to run once the map has loaded
         google.maps.event.addListenerOnce(map, 'idle', function()
         {
-            var socket = io('http://cliffanderson.net:' + PORT);
+            var socket = io('http://173.236.104.132:' + PORT);
 
             socket.on('trains', function(info)
             {
@@ -250,7 +250,6 @@
 
     function moveTrains()
     {
-        console.log("moving");
         //move old trains to new trains
         var count = 0;
         var MOVEMENT_MILLISECONDS = 20000; //How long the movement takes
@@ -258,7 +257,6 @@
 
         var intervalid = setInterval(function()
         {
-            console.log("move");
             if(count >= FRAMES)
             {
                 //stop the function from running

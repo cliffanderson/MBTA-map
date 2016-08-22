@@ -62,7 +62,7 @@
         //Funtion to run once the map has loaded
         google.maps.event.addListenerOnce(map, 'idle', function()
         {
-            var socket = io('http://cliffanderson.net:' + PORT);
+            var socket = io('http://173.236.104.132:' + PORT);
 
             socket.on('trains', function(info)
             {
