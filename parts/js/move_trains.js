@@ -2,7 +2,7 @@
     {
         //move old trains to new trains
         var count = 0;
-        var MOVEMENT_MILLISECONDS = 20000; //How long the movement takes
+        var MOVEMENT_MILLISECONDS = 3000; //How long the movement takes
         var FRAMES = 30; //How many frames the trains have for their entire movement
 
         var intervalid = setInterval(function()
